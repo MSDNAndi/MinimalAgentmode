@@ -24,9 +24,16 @@ jobs:
       contents: read
 
     steps:
-      # Install Node.js — required by the default MCP servers (GitHub MCP server and
+      # Install Node.js — required by both default MCP servers (GitHub MCP server and
       # Playwright MCP server) that Copilot coding agent needs to function.
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+
+      # Install Playwright and its browser dependencies — required by the default
+      # Playwright MCP server. On a minimal ubuntu:22.04 image these are not pre-installed.
+      - name: Install Playwright
+        run: |
+          npm install -D playwright
+          npx playwright install --with-deps
